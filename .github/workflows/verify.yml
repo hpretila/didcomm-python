@@ -2,13 +2,12 @@ name: verify
 
 on:
   pull_request:
-  #  paths:
-  #    - '**.py'
+    #  paths:
+    #    - '**.py'
 
 
 env:
   PKG_NAME: didcomm
-
 
 jobs:
 
@@ -16,95 +15,95 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'stable'
     steps:
-      - uses: actions/checkout@v3
+    - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v4
-        id: setup
-        with:
-          python-version: '3.x'
+    - uses: actions/setup-python@v4
+      id: setup
+      with:
+        python-version: '3.x'
 
-      - name: Install dependencies
-        run: pip install tomli
+    - name: Install dependencies
+      run: pip install tomli
 
-      - name: Get current version
-        id: current_version
-        run: python ./.github/scripts/current_version.py
+    - name: Get current version
+      id: current_version
+      run: python ./.github/scripts/current_version.py
 
-      - name: Check version format
-        run: |
-          # verify the version has "MAJOR.MINOR.PATCH" parts only
-          echo "${{ steps.current_version.outputs.current_version }}" | grep -e '^[0-9]\+\.[0-9]\+\.[0-9]\+$'
-        shell: bash
+    - name: Check version format
+      run: |
+        # verify the version has "MAJOR.MINOR.PATCH" parts only
+        echo "${{ steps.current_version.outputs.current_version }}" | grep -e '^[0-9]\+\.[0-9]\+\.[0-9]\+$'
+      shell: bash
 
-      # TODO improve (DRY): copy-paste from release.yml
-      - name: Get release info
-        id: release_info
-        run: |
-          release_info="$(curl -s https://api.github.com/repos/${{ github.repository }}/releases \
-              | jq '.[] | select(.name == "v${{ steps.current_version.outputs.current_version }}")')"
-          echo "::set-output name=release_info::$release_info"
-          echo "$release_info"
-        shell: bash
+    # TODO improve (DRY): copy-paste from release.yml
+    - name: Get release info
+      id: release_info
+      run: |
+        release_info="$(curl -s https://api.github.com/repos/${{ github.repository }}/releases \
+            | jq '.[] | select(.name == "v${{ steps.current_version.outputs.current_version }}")')"
+        echo "::set-output name=release_info::$release_info"
+        echo "$release_info"
+      shell: bash
 
-      - name: fail unless release not found
-        # TODO check if greater than latest tag / release (?)
-        if: steps.release_info.outputs.release_info
-        run: exit 1
+    - name: fail unless release not found
+      # TODO check if greater than latest tag / release (?)
+      if: steps.release_info.outputs.release_info
+      run: exit 1
 
   static-black:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+    - uses: actions/checkout@v3
 
-      - name: Set up Python 3.7
-        id: setup
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.7'
+    - name: Set up Python 3.10
+      id: setup
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
 
-      - name: Install black
-        run: pipx install black
+    - name: Install black
+      run: pipx install black
 
-      - name: Black Format Check
-        run: black --check .
+    - name: Black Format Check
+      run: black --check .
 
   static-flake8:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+    - uses: actions/checkout@v3
 
-      - name: Set up Python 3.7
-        id: setup
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.7'
+    - name: Set up Python 3.10
+      id: setup
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
 
-      - name: Install flake8
-        run: pipx install flake8
+    - name: Install flake8
+      run: pipx install flake8
 
-      - name: Lint with flake8
-        run: flake8 .
+    - name: Lint with flake8
+      run: flake8 .
 
   unit:
     strategy:
       matrix:
-        python-version: [ '3.7', '3.8', '3.9', '3.10', '3.11' ]
+        python-version: [ '3.10', '3.11', '3.12' ]
         os: [ ubuntu-latest, windows-latest, macos-latest ]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+    - uses: actions/checkout@v3
 
-      - name: Set up Python ${{ matrix.python-version }}
-        id: setup
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
+    - name: Set up Python ${{ matrix.python-version }}
+      id: setup
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
 
-      - name: Install poetry
-        run: pipx install poetry --python ${{ steps.setup.outputs.python-path }}
+    - name: Install poetry
+      run: pipx install poetry --python ${{ steps.setup.outputs.python-path }}
 
-      - name: Install dependencies
-        run: poetry install
+    - name: Install dependencies
+      run: poetry install
 
-      - name: Test with pytest
-        run: poetry run pytest
+    - name: Test with pytest
+      run: poetry run pytest

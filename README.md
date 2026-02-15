@@ -18,7 +18,7 @@ See <https://github.com/sicpa-dlab/didcomm-demo>.
 
 ## Assumptions and Limitations
 
-- Python >= 3.9.
+- Python >= 3.10.
 - In order to use the library, `SecretsResolver` and `DIDResolver` interfaces must be implemented on the application level.
   Implementation of that interfaces is out of DIDComm library scope.  
   - Verification materials are expected in JWK, Base58 and Multibase (internally Base58 only) formats.
