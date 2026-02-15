@@ -727,20 +727,20 @@ typing-extensions = ">=4.14.1"
 
 [[package]]
 name = "pydid"
-version = "0.5.2"
+version = "0.5.3"
 description = "Python library for validating, constructing, and representing DIDs and DID Documents"
 optional = false
-python-versions = "<4.0.0,>=3.9.0"
+python-versions = "<4.0.0,>=3.10.0"
 groups = ["main"]
 files = [
-    {file = "pydid-0.5.2-py3-none-any.whl", hash = "sha256:fcf4bea7b3313ba1581a69ce50fde96a7380f9ecfe0ac97f35db1b293c734925"},
-    {file = "pydid-0.5.2.tar.gz", hash = "sha256:584db299a2e2570c4ece4f8f053a0fa230477298bb5b42d229ae567edf601c95"},
+    {file = "pydid-0.5.3-py3-none-any.whl", hash = "sha256:ad885ed1fcbc49c3561a3f41af71d06fdf70f052edab0edbfca2a69e57883918"},
+    {file = "pydid-0.5.3.tar.gz", hash = "sha256:304c1dc8bca88864e8f0e52aab136721381b0af11c3cb1b0aad4b94bae96b99b"},
 ]
 
 [package.dependencies]
-inflection = ">=0.5.1,<0.6.0"
+inflection = ">=0.5.0,<0.6.0"
 pydantic = ">=2.7.0,<3.0.0"
-typing-extensions = ">=4.7.0,<5.0.0"
+typing-extensions = ">=4.12.0,<5.0.0"
 
 [[package]]
 name = "pyflakes"
@@ -1007,5 +1007,5 @@ files = [
 
 [metadata]
 lock-version = "2.1"
-python-versions = ">=3.10.0,<4.0"
-content-hash = "c53f8f8c89956f32e647aa0ae54109a2da341173247a67dc008cae8a5377e750"
+python-versions = "^3.10.0"
+content-hash = "84cf299c7a5c5009fb6a63c75d051d92d019a71cb5561d7d94e7879de94d3470"
