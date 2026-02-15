@@ -1,10 +1,17 @@
 name: verify
 
 on:
+
   pull_request:
     #  paths:
     #    - '**.py'
 
+  workflow_dispatch:
+    inputs:
+      devN:
+        description: 'development release number'
+        required: false
+        default: '0'
 
 env:
   PKG_NAME: didcomm
